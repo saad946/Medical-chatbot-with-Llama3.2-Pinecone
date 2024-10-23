@@ -1,0 +1,16 @@
+flask==2.0.3  
+fastapi==0.115.2
+python-dotenv==1.0.1
+PyPDF2==1.26.0  
+pypdf==5.0.1
+transformers==4.45.2  
+sentence-transformers==3.1.1
+huggingface_hub==0.25.1
+ctransformers==0.2.5
+openai==1.51.0
+langchain==0.3.3
+langchain_openai==0.2.2
+langchain_pinecone==0.2.0
+pinecone-client==5.0.1
+pinecone==5.3.1
+langchain-community
