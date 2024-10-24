@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" rel="stylesheet">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
+</head>
+<body>
+    <div class="container-fluid h-100">
+        <div class="row justify-content-center h-100">
+            <div class="col-md-8 col-xl-6 chat">
+                <div class="card">
+                    <div class="card-header msg_head">
+                        <div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img src="/static/doctor_image.png" class="rounded-circle user_img">
+                                <span class="online_icon"></span>
+                            </div>
+                            <div class="user_info">
+                                <span>Medical Chatbot</span>
+                                <p>Ask me anything!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="messageFormeight" class="card-body msg_card_body">
+                        <!-- Messages will be appended here -->
+                    </div>
+                    <div class="card-footer">
+                        <form id="messageArea" class="input-group">
+                            <input type="text" id="text" name="msg" placeholder="Type your message..." autocomplete="off" class="form-control type_msg" required/>
+                            <div class="input-group-append">
+                                <button type="submit" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#messageArea").submit(function(event) {
+                event.preventDefault();
+                const msg = $("#text").val();
+                const str_time = new Date().toLocaleTimeString();
+    
+                // User message with logo on the right
+                var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + msg + '<span class="msg_time_send">' + str_time + '</span></div><div class="img_cont_msg"><img src="/static/user_logo.jpg" class="rounded-circle user_img_msg"></div></div>';
+                $("#messageFormeight").append(userHtml);
+                $("#text").val("");
+    
+                $.ajax({
+                    type: "POST",
+                    url: "/get",
+                    data: {msg: msg},
+                    success: function(data) {
+                        // Doctor message with logo on the left
+                        var botHtml = '<div class="d-flex justify-content-end mb-4"><div class="img_cont_msg"><img src="/static/doctor_image.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer">' + data.response + '<span class="msg_time">' + str_time + '</span></div></div>';
+                        $("#messageFormeight").append(botHtml);
+                    },
+                    error: function() {
+                        alert('Error retrieving response. Please try again later.');
+                    }
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>
